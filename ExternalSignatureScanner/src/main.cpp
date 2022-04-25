@@ -23,7 +23,7 @@ int getProcessIdByName(std::wstring proccesName)
 	return procId;
 }
 
-void parseCommandLineArguments(int& procId, std::wstring& signature)
+int parseCommandLineArguments(int& procId, std::wstring& signature)
 {
 	int argcW;
 	LPWSTR* argvW;
@@ -40,7 +40,7 @@ void parseCommandLineArguments(int& procId, std::wstring& signature)
 		procId = getProcessIdByName(procName);
 		if (procId == -1)
 		{
-			std::cout << "Could not find running application" << procName << std::endl;
+			std::cout << "Could not find running application: " << procName.c_str() << std::endl;
 			return 1;
 		}
 	}
