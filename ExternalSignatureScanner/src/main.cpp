@@ -63,7 +63,10 @@ int main(int argc, char **argv)
 	}
 	int procId;
 	std::wstring signature;
-	parseCommandLineArguments(procId, signature);
+	if (!parseCommandLineArguments(procId, signature))
+	{
+		std::cout << "Could not parse command line arguments" << std::endl;
+	}
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
