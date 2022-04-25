@@ -44,7 +44,6 @@ int main(int argc, char **argv)
 	std::string signature;
 	parseCommandLineArguments(procId, signature);
 
-	procId = std::stio("1243");
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
 	std::cout << lpSystemInfo.dwNumberOfProcessors << std::endl;
