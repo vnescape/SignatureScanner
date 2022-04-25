@@ -1,11 +1,26 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <tlhelp32.h>
 
 int getProcessIdByName(std::wstring proccesName)
 {
-	// TODO
-	return 0;
+	int procId = -1;
+
+	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+	PROCESSENTRY32 entry;
+	entry.dwSize = sizeof(PROCESSENTRY32);
+	if (Process32First(hSnapshot, &entry))
+	{
+		while (Process32NextW(hSnapshot, &entry))
+		{
+			if (wcscmp(entry.szExeFile, proccesName.c_str()))
+			{
+				procId = entry.th32ProcessID;
+			}
+		}
+	}
+	return procId;
 }
 
 void parseCommandLineArguments(int& procId, std::wstring& signature)
