@@ -2,20 +2,22 @@
 #include <iostream>
 #include <Windows.h>
 
-void printUsage()
-{
-	std::cout << "Usage:"
 
-}
 
 int main(int argc, char **argv)
 {
+	SYSTEM_INFO lpSystemInfo;
+	int argcW;
+	LPWSTR* argvW;
+
+	// check for arguments
 	if (argc < 3) {
 		std::cout << "Usage: .\\ExternalSignatureScanner.exe <processID / processName> <signature>" << std::endl;
 		return 1;
 	}
 
-	SYSTEM_INFO lpSystemInfo;
+	// get commannd line arguments as wide chars 
+	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
