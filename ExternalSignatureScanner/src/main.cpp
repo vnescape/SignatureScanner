@@ -38,6 +38,11 @@ void parseCommandLineArguments(int& procId, std::wstring& signature)
 	if (procName.find(L".exe") != std::string::npos)
 	{
 		procId = getProcessIdByName(procName);
+		if (procId == -1)
+		{
+			std::cout << "Could not find running application" << procName << std::endl;
+			return 1;
+		}
 	}
 	else
 	{
