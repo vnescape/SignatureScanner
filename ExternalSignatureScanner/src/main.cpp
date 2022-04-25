@@ -1,5 +1,13 @@
+
 #include <iostream>
+#include <Windows.h>
 
 int main() {
-	std::cout << "Hello ExternalSignatureScanner" << std::endl;
+
+	SYSTEM_INFO lpSystemInfo;
+
+	// retrieve system informations
+	GetSystemInfo(&lpSystemInfo);
+	std::cout << lpSystemInfo.dwNumberOfProcessors << std::endl;
+	return 0;
 }
