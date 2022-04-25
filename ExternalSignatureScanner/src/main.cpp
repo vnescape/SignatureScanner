@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <Windows.h>
 
 int getProcessIdByName(std::string proccesName)
@@ -25,7 +26,7 @@ void parseCommandLineArguments(int& procId, std::string& signature)
 	}
 	else
 	{
-		procId = std::stio(procName); 
+		procId = std::stoi(procName); 
 	}
 
 }
