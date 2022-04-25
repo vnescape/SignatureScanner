@@ -2,25 +2,25 @@
 #include <string>
 #include <Windows.h>
 
-int getProcessIdByName(std::string proccesName)
+int getProcessIdByName(std::wstring proccesName)
 {
 	// TODO
 	return 0;
 }
 
-void parseCommandLineArguments(int& procId, std::string& signature)
+void parseCommandLineArguments(int& procId, std::wstring& signature)
 {
 	int argcW;
 	LPWSTR* argvW;
-	std::string procName;
+	std::wstring procName;
 
 	// get commannd line arguments as wide chars 
 	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
-	procName = *argvW[1];
-	signature = *argvW[2];
+	procName = argvW[1];
+	signature = argvW[2];
 
 	// if process name is used instead of providing process id
-	if (procName.find(".exe") != std::string::npos)
+	if (procName.find(L".exe") != std::string::npos)
 	{
 		procId = getProcessIdByName(procName);
 	}
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	int procId;
-	std::string signature;
+	std::wstring signature;
 	parseCommandLineArguments(procId, signature);
 
 	// retrieve system informations
