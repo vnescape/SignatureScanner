@@ -5,9 +5,23 @@
 
 std::wstring getProcessNameById(int& procId)
 {
-
 	// if no process with procId was found
-	return NULL;
+	std::wstring procName = NULL;
+
+	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+	PROCESSENTRY32 entry;
+	entry.dwSize = sizeof(PROCESSENTRY32);
+	if (Process32First(hSnapshot, &entry))
+	{
+		while (Process32NextW(hSnapshot, &entry))
+		{
+			if (wcscmp(entry.th32ProcessID, procId))
+			{
+				procName = entry.szExeFile;
+			}
+		}
+	}
+	return procName;
 }
 
 int getProcessIdByProcessName(std::wstring proccesName)
