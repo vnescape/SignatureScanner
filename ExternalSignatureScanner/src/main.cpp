@@ -61,12 +61,16 @@ int main(int argc, char **argv)
 		std::cout << "Usage: .\\ExternalSignatureScanner.exe <processID / processName> <signature>" << std::endl;
 		return 1;
 	}
+
+	std::cout << "[>] Scan for process id or process name..." << std::endl;
+
 	int procId;
 	std::wstring signature;
 	if (!parseCommandLineArguments(procId, signature))
 	{
 		std::cout << "Could not parse command line arguments" << std::endl;
 	}
+	std::cout << "[*] Found process" << std::endl;
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
