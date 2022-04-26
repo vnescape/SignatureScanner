@@ -3,7 +3,14 @@
 #include <Windows.h>
 #include <tlhelp32.h>
 
-int getProcessIdByName(std::wstring proccesName)
+std::wstring getProcessNameById(int& procId)
+{
+
+	// if no process with procId was found
+	return NULL;
+}
+
+int getProcessIdByProcessName(std::wstring proccesName)
 {
 	int procId = -1;
 
@@ -37,7 +44,7 @@ int parseCommandLineArguments(int& outProcId, std::wstring& outSignature)
 	// if process name is used instead of providing process id
 	if (procName.find(L".exe") != std::string::npos)
 	{
-		outProcId = getProcessIdByName(procName);
+		outProcId = getProcessIdByProcessName(procName);
 		if (outProcId == -1)
 		{
 			std::cout << "Could not find running application: " << procName.c_str() << std::endl;
@@ -70,8 +77,12 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Could not parse command line arguments" << std::endl;
 	}
+
+
+
 	std::cout << "[*] Found process" << std::endl;
 	std::cout << "    |- procId: " << procId << std::endl;
+	std::cout << "    |- procName: " << getProcessNameById(procId).c_str() << std::endl;
 	
 
 	// retrieve system informations
