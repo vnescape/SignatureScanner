@@ -6,7 +6,7 @@
 std::wstring getProcessNameById(DWORD& procId)
 {
 	// if no process with procId was found
-	std::wstring procName = NULL;
+	std::wstring procName = L"";
 
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	PROCESSENTRY32 entry;
@@ -35,7 +35,7 @@ DWORD getProcessIdByProcessName(std::wstring proccesName)
 	{
 		while (Process32NextW(hSnapshot, &entry))
 		{
-			if (wcscmp(entry.szExeFile, proccesName.c_str()))
+			if (wcscmp(entry.szExeFile, proccesName.c_str()) == TRUE) // TODO: comparison does not work
 			{
 				procId = entry.th32ProcessID;
 			}
