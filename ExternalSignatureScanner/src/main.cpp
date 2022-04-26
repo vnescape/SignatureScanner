@@ -73,7 +73,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outSignature)
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	SYSTEM_INFO lpSystemInfo;
 
@@ -92,12 +92,9 @@ int main(int argc, char **argv)
 		std::cout << "Could not parse command line arguments" << std::endl;
 	}
 
-
-
 	std::cout << "[*] Found process" << std::endl;
 	std::cout << "    |- procId: " << procId << std::endl;
 	std::cout << "    |- procName: " << getProcessNameById(procId).c_str() << std::endl;
-	
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
