@@ -41,14 +41,14 @@ int parseCommandLineArguments(int& outProcId, std::wstring& outSignature)
 		if (outProcId == -1)
 		{
 			std::cout << "Could not find running application: " << procName.c_str() << std::endl;
-			return 1;
+			return 0;
 		}
 	}
 	else
 	{
 		outProcId = std::stoi(procName);
 	}
-
+	return 1;
 }
 
 
@@ -71,6 +71,8 @@ int main(int argc, char **argv)
 		std::cout << "Could not parse command line arguments" << std::endl;
 	}
 	std::cout << "[*] Found process" << std::endl;
+	std::cout << "    |- procId: " << procId << std::endl;
+	
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
