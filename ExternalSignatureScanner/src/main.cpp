@@ -23,7 +23,7 @@ int getProcessIdByName(std::wstring proccesName)
 	return procId;
 }
 
-int parseCommandLineArguments(int& procId, std::wstring& signature)
+int parseCommandLineArguments(int& outProcId, std::wstring& outSignature)
 {
 	int argcW;
 	LPWSTR* argvW;
@@ -32,13 +32,13 @@ int parseCommandLineArguments(int& procId, std::wstring& signature)
 	// get commannd line arguments as wide chars 
 	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
 	procName = argvW[1];
-	signature = argvW[2];
+	outSignature = argvW[2];
 
 	// if process name is used instead of providing process id
 	if (procName.find(L".exe") != std::string::npos)
 	{
-		procId = getProcessIdByName(procName);
-		if (procId == -1)
+		outProcId = getProcessIdByName(procName);
+		if (outProcId == -1)
 		{
 			std::cout << "Could not find running application: " << procName.c_str() << std::endl;
 			return 1;
@@ -46,7 +46,7 @@ int parseCommandLineArguments(int& procId, std::wstring& signature)
 	}
 	else
 	{
-		procId = std::stoi(procName); 
+		outProcId = std::stoi(procName);
 	}
 
 }
