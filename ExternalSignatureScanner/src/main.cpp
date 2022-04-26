@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <tlhelp32.h>
 
-std::wstring getProcessNameById(int& procId)
+std::wstring getProcessNameById(DWORD& procId)
 {
 	// if no process with procId was found
 	std::wstring procName = NULL;
@@ -15,7 +15,7 @@ std::wstring getProcessNameById(int& procId)
 	{
 		while (Process32NextW(hSnapshot, &entry))
 		{
-			if (wcscmp(entry.th32ProcessID, procId))
+			if (entry.th32ProcessID == procId)
 			{
 				procName = entry.szExeFile;
 			}
@@ -24,9 +24,9 @@ std::wstring getProcessNameById(int& procId)
 	return procName;
 }
 
-int getProcessIdByProcessName(std::wstring proccesName)
+DWORD getProcessIdByProcessName(std::wstring proccesName)
 {
-	int procId = -1;
+	DWORD procId = -1;
 
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	PROCESSENTRY32 entry;
@@ -44,7 +44,7 @@ int getProcessIdByProcessName(std::wstring proccesName)
 	return procId;
 }
 
-int parseCommandLineArguments(int& outProcId, std::wstring& outSignature)
+int parseCommandLineArguments(DWORD& outProcId, std::wstring& outSignature)
 {
 	int argcW;
 	LPWSTR* argvW;
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
 	std::cout << "[>] Scan for process id or process name..." << std::endl;
 
-	int procId;
+	DWORD procId;
 	std::wstring signature;
 	if (!parseCommandLineArguments(procId, signature))
 	{
