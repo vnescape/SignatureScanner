@@ -27,7 +27,7 @@ void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
 
 DWORD getProcessIdByProcessName(std::wstring proccesName)
 {
-	DWORD procId = 0;
+	DWORD procId = -1;
 
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	PROCESSENTRY32 entry;
@@ -60,7 +60,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	if (procNameOrId.find(L".exe") != std::string::npos)
 	{
 		getProcessNameOrId(outProcId, procNameOrId);
-		if (outProcId == 0)
+		if (outProcId == -1)
 		{
 			std::cout << "Could not find running application: " << procNameOrId.c_str() << std::endl;
 			return 0;
@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 
 	std::cout << "[>] Scan for process id or process name..." << std::endl;
 
-	DWORD procId = 0;
+	DWORD procId = -1;
 	std::wstring procName;
 	std::wstring signature;
 
