@@ -96,11 +96,12 @@ int main(int argc, char** argv)
 	{
 		std::cout << "[-] Could not parse command line arguments" << std::endl;
 	}
-
-	std::cout << "[+] Found process" << std::endl;
-	std::cout << "    |- procId: " << procId << std::endl;
-	std::cout << "    |- procName: " << procName.c_str() << std::endl;
-
+	else
+	{
+		std::cout << "[+] Found process" << std::endl;
+		std::cout << "    |- procId: " << procId << std::endl;
+		std::cout << "    |- procName: " << procName.c_str() << std::endl;
+	}
 
 	return 0;
 }
