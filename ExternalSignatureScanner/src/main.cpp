@@ -5,18 +5,17 @@
 
 void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
 {
-	// if no process with procId was found
-	std::wstring procName = L"";
+	PROCESSENTRY32 entry;
+	std::wstring procName = L""; // if no process with procId was found
 
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	PROCESSENTRY32 entry;
+
 	entry.dwSize = sizeof(PROCESSENTRY32);
 	if (Process32First(hSnapshot, &entry))
 	{
 		while (Process32NextW(hSnapshot, &entry))
 		{
-			WCHAR* exeName = entry.szExeFile;
-			if (entry.th32ProcessID == outProcId || wcscmp(exeName, outProcName.c_str()) == 0)
+			if (entry.th32ProcessID == outProcId || wcscmp(entry.szExeFile, outProcName.c_str()) == 0)
 			{
 				outProcName = entry.szExeFile;
 				outProcId = entry.th32ProcessID;
@@ -31,6 +30,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	int argcW;
 	LPWSTR* argvW;
 	std::wstring procNameOrId;
+	DWORD procId;
 
 	// get commannd line arguments as wide chars 
 	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
@@ -45,7 +45,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	}
 	else
 	{
-		DWORD procId = std::stoi(procNameOrId);
+		procId = std::stoi(procNameOrId);
 		getProcessNameOrId(procId, outProcName); // empty procName
 	}
 
@@ -60,7 +60,9 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 
 int main(int argc, char** argv)
 {
-	SYSTEM_INFO lpSystemInfo;
+	DWORD procId = -1;
+	std::wstring procName;
+	std::wstring signature;
 
 	// check for arguments
 	if (argc < 3) {
@@ -70,9 +72,7 @@ int main(int argc, char** argv)
 
 	std::cout << "[ ] Scan for process id or process name..." << std::endl;
 
-	DWORD procId = -1;
-	std::wstring procName;
-	std::wstring signature;
+
 
 	if (!parseCommandLineArguments(procId, procName, signature))
 	{
