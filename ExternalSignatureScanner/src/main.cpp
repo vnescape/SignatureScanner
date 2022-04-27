@@ -59,16 +59,18 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	// if process name is used instead of providing process id
 	if (procNameOrId.find(L".exe") != std::string::npos)
 	{
-		getProcessNameOrId(outProcId, procNameOrId);
-		if (outProcId == -1)
-		{
-			std::cout << "Could not find running application: " << procNameOrId.c_str() << std::endl;
-			return 0;
-		}
+		getProcessNameOrId(outProcId, procNameOrId); // empty procId
+
 	}
 	else
 	{
-		outProcId = std::stoi(procNameOrId);
+		DWORD procId = std::stoi(procNameOrId);
+		getProcessNameOrId(procId, outProcName); // empty procName
+	}
+	if (outProcId == -1)
+	{
+		std::cout << "Could not find running application: " << procNameOrId.c_str() << std::endl;
+		return 0;
 	}
 	return 1;
 }
