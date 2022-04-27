@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <tlhelp32.h>
 
-std::wstring getProcessNameById(DWORD& procId)
+void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
 {
 	// if no process with procId was found
 	std::wstring procName = L"";
@@ -15,13 +15,14 @@ std::wstring getProcessNameById(DWORD& procId)
 	{
 		while (Process32NextW(hSnapshot, &entry))
 		{
-			if (entry.th32ProcessID == procId)
+			if (entry.th32ProcessID == outProcId || wcscmp(entry.szExeFile, outProcName.c_str()))
 			{
-				procName = entry.szExeFile;
+				outProcName = entry.szExeFile;
+				outProcId = entry.th32ProcessID;
 			}
 		}
 	}
-	return procName;
+	return;
 }
 
 DWORD getProcessIdByProcessName(std::wstring proccesName)
@@ -44,30 +45,30 @@ DWORD getProcessIdByProcessName(std::wstring proccesName)
 	return procId;
 }
 
-int parseCommandLineArguments(DWORD& outProcId, std::wstring& outSignature)
+int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
 {
 	int argcW;
 	LPWSTR* argvW;
-	std::wstring procName;
+	std::wstring procNameOrId;
 
 	// get commannd line arguments as wide chars 
 	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
-	procName = argvW[1];
+	procNameOrId = argvW[1];
 	outSignature = argvW[2];
 
 	// if process name is used instead of providing process id
-	if (procName.find(L".exe") != std::string::npos)
+	if (procNameOrId.find(L".exe") != std::string::npos)
 	{
-		outProcId = getProcessIdByProcessName(procName);
+		getProcessNameOrId(outProcId, procNameOrId);
 		if (outProcId == 0)
 		{
-			std::cout << "Could not find running application: " << procName.c_str() << std::endl;
+			std::cout << "Could not find running application: " << procNameOrId.c_str() << std::endl;
 			return 0;
 		}
 	}
 	else
 	{
-		outProcId = std::stoi(procName);
+		outProcId = std::stoi(procNameOrId);
 	}
 	return 1;
 }
@@ -86,15 +87,17 @@ int main(int argc, char** argv)
 	std::cout << "[>] Scan for process id or process name..." << std::endl;
 
 	DWORD procId = 0;
+	std::wstring procName;
 	std::wstring signature;
-	if (!parseCommandLineArguments(procId, signature))
+
+	if (!parseCommandLineArguments(procId, procName, signature))
 	{
 		std::cout << "Could not parse command line arguments" << std::endl;
 	}
 
 	std::cout << "[*] Found process" << std::endl;
 	std::cout << "    |- procId: " << procId << std::endl;
-	std::cout << "    |- procName: " << getProcessNameById(procId).c_str() << std::endl;
+	std::cout << "    |- procName: " << procName.c_str() << std::endl;
 
 	// retrieve system informations
 	GetSystemInfo(&lpSystemInfo);
