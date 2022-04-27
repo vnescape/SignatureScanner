@@ -69,7 +69,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	}
 	if (outProcId == -1)
 	{
-		std::cout << "Could not find running application: " << procNameOrId.c_str() << std::endl;
+		std::cout << "[-] Could not find running application: " << procNameOrId.c_str() << std::endl;
 		return 0;
 	}
 	return 1;
@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	std::cout << "[>] Scan for process id or process name..." << std::endl;
+	std::cout << "[ ] Scan for process id or process name..." << std::endl;
 
 	DWORD procId = -1;
 	std::wstring procName;
@@ -94,10 +94,10 @@ int main(int argc, char** argv)
 
 	if (!parseCommandLineArguments(procId, procName, signature))
 	{
-		std::cout << "Could not parse command line arguments" << std::endl;
+		std::cout << "[-] Could not parse command line arguments" << std::endl;
 	}
 
-	std::cout << "[*] Found process" << std::endl;
+	std::cout << "[+] Found process" << std::endl;
 	std::cout << "    |- procId: " << procId << std::endl;
 	std::cout << "    |- procName: " << procName.c_str() << std::endl;
 
