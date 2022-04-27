@@ -83,7 +83,8 @@ int main(int argc, char** argv)
 	{
 		std::cout << "[+] Found process" << std::endl;
 		std::cout << "    |- procId: " << procId << std::endl;
-		std::cout << "    |- procName: " << procName.c_str() << std::endl;
+		std::cout << "    |- procName: ";
+		std::wcout << procName.c_str() << std::endl;
 	}
 
 	return 0;
