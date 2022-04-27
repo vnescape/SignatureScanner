@@ -15,7 +15,8 @@ void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
 	{
 		while (Process32NextW(hSnapshot, &entry))
 		{
-			if (entry.th32ProcessID == outProcId || wcscmp(entry.szExeFile, outProcName.c_str()))
+			WCHAR* exeName = entry.szExeFile;
+			if (entry.th32ProcessID == outProcId || wcscmp(exeName, outProcName.c_str()) == 0)
 			{
 				outProcName = entry.szExeFile;
 				outProcId = entry.th32ProcessID;
@@ -23,26 +24,6 @@ void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
 		}
 	}
 	return;
-}
-
-DWORD getProcessIdByProcessName(std::wstring proccesName)
-{
-	DWORD procId = -1;
-
-	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	PROCESSENTRY32 entry;
-	entry.dwSize = sizeof(PROCESSENTRY32);
-	if (Process32First(hSnapshot, &entry))
-	{
-		while (Process32NextW(hSnapshot, &entry))
-		{
-			if (wcscmp(entry.szExeFile, proccesName.c_str()) == TRUE) // TODO: comparison does not work
-			{
-				procId = entry.th32ProcessID;
-			}
-		}
-	}
-	return procId;
 }
 
 int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
@@ -67,6 +48,7 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 		DWORD procId = std::stoi(procNameOrId);
 		getProcessNameOrId(procId, outProcName); // empty procName
 	}
+
 	if (outProcId == -1)
 	{
 		std::cout << "[-] Could not find running application: " << procNameOrId.c_str() << std::endl;
