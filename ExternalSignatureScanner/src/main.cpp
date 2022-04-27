@@ -3,10 +3,9 @@
 #include <Windows.h>
 #include <tlhelp32.h>
 
-void getProcessNameOrId(DWORD& outProcId, std::wstring outProcName)
+void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 {
 	PROCESSENTRY32 entry;
-	std::wstring procName = L""; // if no process with procId was found
 
 	HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 
@@ -41,12 +40,14 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 	if (procNameOrId.find(L".exe") != std::string::npos)
 	{
 		getProcessNameOrId(outProcId, procNameOrId); // empty procId
+		outProcName = procNameOrId;
 
 	}
 	else
 	{
 		procId = std::stoi(procNameOrId);
 		getProcessNameOrId(procId, outProcName); // empty procName
+		outProcId = procId;
 	}
 
 	if (outProcId == -1)
