@@ -101,9 +101,6 @@ int main(int argc, char** argv)
 	std::cout << "    |- procId: " << procId << std::endl;
 	std::cout << "    |- procName: " << procName.c_str() << std::endl;
 
-	// retrieve system informations
-	GetSystemInfo(&lpSystemInfo);
-	std::cout << lpSystemInfo.dwNumberOfProcessors << std::endl;
 
 	return 0;
 }
