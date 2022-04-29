@@ -52,7 +52,8 @@ int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::
 
 	if (outProcId == -1)
 	{
-		std::cout << "[-] Could not find running application: " << procNameOrId.c_str() << std::endl;
+		std::cout << "[-] Could not find running application: ";
+		std::wcout << outProcName.c_str() << std::endl;
 		return 0;
 	}
 	return 1;
@@ -87,6 +88,10 @@ int main(int argc, char** argv)
 		std::cout << "[-] Could not parse command line arguments" << std::endl;
 		return 1;
 	}
+
+	// get system info
+	LPSYSTEM_INFO sysInfo = { 0 };
+	std::cout << sysInfo->dwNumberOfProcessors << std::endl;
 
 	return 0;
 }
