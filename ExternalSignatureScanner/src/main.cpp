@@ -65,6 +65,7 @@ int main(int argc, char** argv)
 	DWORD procId = -1;
 	std::wstring procName;
 	std::wstring signature;
+	SYSTEM_INFO sysInfo = { 0 };
 
 	// check for arguments
 	if (argc < 3) {
@@ -90,8 +91,8 @@ int main(int argc, char** argv)
 	}
 
 	// get system info
-	LPSYSTEM_INFO sysInfo = { 0 };
-	std::cout << sysInfo->dwNumberOfProcessors << std::endl;
+	GetSystemInfo(&sysInfo);
+	std::cout << sysInfo.dwNumberOfProcessors << std::endl;
 
 	return 0;
 }
