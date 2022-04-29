@@ -75,16 +75,17 @@ int main(int argc, char** argv)
 
 
 
-	if (!parseCommandLineArguments(procId, procName, signature))
-	{
-		std::cout << "[-] Could not parse command line arguments" << std::endl;
-	}
-	else
+	if (parseCommandLineArguments(procId, procName, signature))
 	{
 		std::cout << "[+] Found process" << std::endl;
 		std::cout << "    |- procId: " << procId << std::endl;
 		std::cout << "    |- procName: ";
 		std::wcout << procName.c_str() << std::endl;
+	}
+	else
+	{
+		std::cout << "[-] Could not parse command line arguments" << std::endl;
+		return 1;
 	}
 
 	return 0;
