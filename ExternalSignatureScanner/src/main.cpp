@@ -109,7 +109,10 @@ int main(int argc, char** argv)
 				void* buffer = calloc(1, me32.modBaseSize);
 				SIZE_T bytesRead;
 				
-				ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, buffer, me32.modBaseSize, &bytesRead);
+				if (buffer != 0)
+				{
+					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, buffer, me32.modBaseSize, &bytesRead);
+				}
 			}
 		}
 	}
