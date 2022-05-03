@@ -113,6 +113,7 @@ int main(int argc, char** argv)
 				{
 					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, buffer, me32.modBaseSize, &bytesRead);
 				}
+				free(buffer);
 			}
 		}
 	}
