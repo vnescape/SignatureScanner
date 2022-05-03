@@ -106,14 +106,15 @@ int main(int argc, char** argv)
 		{
 			if (me32.th32ProcessID == procId)
 			{
-				void* buffer = calloc(1, me32.modBaseSize);
+				void* processMemory = calloc(1, me32.modBaseSize);
 				SIZE_T bytesRead;
 				
-				if (buffer != 0)
+				if (processMemory != 0)
 				{
-					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, buffer, me32.modBaseSize, &bytesRead);
+					// reads process memory starting with the MZ header
+					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, processMemory, me32.modBaseSize, &bytesRead);
 				}
-				free(buffer);
+				free(processMemory);
 			}
 		}
 	}
