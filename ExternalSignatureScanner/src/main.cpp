@@ -113,6 +113,7 @@ int main(int argc, char** argv)
 				{
 					// reads process memory starting with the MZ header
 					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, processMemory, me32.modBaseSize, &bytesRead);
+					std::cout << "ModuleId: " << me32.th32ModuleID << std::endl;
 				}
 				free(processMemory);
 			}
