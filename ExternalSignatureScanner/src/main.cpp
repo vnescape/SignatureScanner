@@ -93,10 +93,7 @@ int main(int argc, char** argv)
 	//convert signature into byte array
 	const wchar_t* byteArray = signature.c_str();
 	int byteArrayLength = signature.length();
-	for (int i = 0; i < byteArrayLength; i++)
-	{
-		std::cout << (char) byteArray[i] << std::endl;
-	}
+
 
 	// get system info
 	GetSystemInfo(&sysInfo);
@@ -105,8 +102,23 @@ int main(int argc, char** argv)
 	MODULEENTRY32 me32;
 	me32.dwSize = sizeof(MODULEENTRY32);
 
-	HANDLE targetProcess = OpenProcess(PROCESS_VM_READ, true, procId);
+	HANDLE targetProcess = OpenProcess(PROCESS_VM_READ || PROCESS_QUERY_INFORMATION, true, procId);
 	HANDLE moduleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procId);
+
+	LPCVOID addr = NULL;
+	MEMORY_BASIC_INFORMATION memInfo;
+
+	unsigned int bytesInfoBuffer = VirtualQueryEx(targetProcess, addr, &memInfo, sizeof(memInfo));
+	std::cout << GetLastError() << std::endl;
+	while (true)
+	{
+		if (memInfo.State == MEM_COMMIT && memInfo.Protect != PAGE_NOACCESS)
+		{
+			
+		}
+		addr = &addr + memInfo.RegionSize;
+		std::cout << "Address: " << &addr << std::endl;
+	}
 
 	if (Module32First(moduleSnapshot, &me32))
 	{
