@@ -115,10 +115,14 @@ int main(int argc, char** argv)
 		if (memInfo.State == MEM_COMMIT && memInfo.Protect != PAGE_NOACCESS)
 		{
 			std::cout << " [MEM_COMMIT && !PAGE_NOACCESS] Address: " << addr << std::endl;
+			for (LPCVOID i = addr; i < (char*)addr + memInfo.RegionSize; i = (char*)i + 1) // increment by 1 Byte
+			{
+				std::cout << "    |- " << i << "\r"; // moving the cursor back to the start
+			}
 		}
 		else
 		{
-			//std::cout << " Address: " << addr << '\r';
+			//std::cout << " Address: " << addr << '\r'; // reset line by moving the cursor to the start of the line
 			std::cout << " Address: " << addr << std::endl;
 		}
 		// cast to char* so bytes will be added
