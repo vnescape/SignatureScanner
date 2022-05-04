@@ -114,10 +114,15 @@ int main(int argc, char** argv)
 	{
 		if (memInfo.State == MEM_COMMIT && memInfo.Protect != PAGE_NOACCESS)
 		{
-			
+			std::cout << " [MEM_COMMIT && !PAGE_NOACCESS] Address: " << addr << std::endl;
 		}
+		else
+		{
+			//std::cout << " Address: " << addr << '\r';
+			std::cout << " Address: " << addr << std::endl;
+		}
+		// cast to char* so bytes will be added
 		addr = (char*)addr + memInfo.RegionSize;
-		std::cout << " Address: " << addr << '\r';
 	}
 	
 	CloseHandle(targetProcess);
