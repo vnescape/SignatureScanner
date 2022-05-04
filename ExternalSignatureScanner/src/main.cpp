@@ -90,6 +90,14 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	//convert signature into byte array
+	const wchar_t* byteArray = signature.c_str();
+	int byteArrayLength = signature.length();
+	for (int i = 0; i < byteArrayLength; i++)
+	{
+		std::cout << (char) byteArray[i] << std::endl;
+	}
+
 	// get system info
 	GetSystemInfo(&sysInfo);
 	//std::cout << sysInfo.dwNumberOfProcessors << std::endl;
