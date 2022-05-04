@@ -97,48 +97,29 @@ int main(int argc, char** argv)
 
 	// get system info
 	GetSystemInfo(&sysInfo);
-	//std::cout << sysInfo.dwNumberOfProcessors << std::endl;
+	std::cout << "Scan from " << sysInfo.lpMinimumApplicationAddress
+		<< " to " << sysInfo.lpMaximumApplicationAddress << std::endl;
 
 	MODULEENTRY32 me32;
 	me32.dwSize = sizeof(MODULEENTRY32);
 
-	HANDLE targetProcess = OpenProcess(PROCESS_VM_READ || PROCESS_QUERY_INFORMATION, true, procId);
+	HANDLE targetProcess = OpenProcess(PROCESS_QUERY_INFORMATION, true, procId);
 	HANDLE moduleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procId);
 
 	LPCVOID addr = NULL;
 	MEMORY_BASIC_INFORMATION memInfo;
 
-	unsigned int bytesInfoBuffer = VirtualQueryEx(targetProcess, addr, &memInfo, sizeof(memInfo));
-	std::cout << GetLastError() << std::endl;
-	while (true)
+
+	while (VirtualQueryEx(targetProcess, addr, &memInfo, sizeof(memInfo)))
 	{
 		if (memInfo.State == MEM_COMMIT && memInfo.Protect != PAGE_NOACCESS)
 		{
 			
 		}
-		addr = &addr + memInfo.RegionSize;
-		std::cout << "Address: " << &addr << std::endl;
+		addr = (char*)addr + memInfo.RegionSize;
+		std::cout << " Address: " << addr << '\r';
 	}
-
-	if (Module32First(moduleSnapshot, &me32))
-	{
-		while (Module32Next(moduleSnapshot, &me32))
-		{
-			if (me32.th32ProcessID == procId)
-			{
-				void* processMemory = calloc(1, me32.modBaseSize);
-				SIZE_T bytesRead;
-				
-				if (processMemory != 0)
-				{
-					// reads process memory starting with the MZ header
-					ReadProcessMemory(targetProcess, (LPCVOID)me32.modBaseAddr, processMemory, me32.modBaseSize, &bytesRead);
-					std::cout << "ModuleId: " << me32.th32ModuleID << std::endl;
-				}
-				free(processMemory);
-			}
-		}
-	}
+	
 	CloseHandle(targetProcess);
 	return 0;
 }
