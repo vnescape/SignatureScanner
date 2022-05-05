@@ -35,7 +35,7 @@ void scanFullMemory(DWORD procId)
 
 }
 
-void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
+static void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 {
 	PROCESSENTRY32 entry;
 
@@ -56,7 +56,7 @@ void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 	return;
 }
 
-int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
+static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
 {
 	int argcW;
 	LPWSTR* argvW;
