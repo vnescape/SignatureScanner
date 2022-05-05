@@ -5,8 +5,10 @@
 
 #include "Scanner.h"
 
-
-
+/*
+Fills outProcId or outProcName depanding on with is empty.
+If they are both empty the function won't do 
+*/
 static void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 {
 	PROCESSENTRY32 entry;
@@ -28,6 +30,10 @@ static void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 	return;
 }
 
+
+/*
+Figures out if procId or procName is givin by the user and fills in the parameters by reference.
+*/
 static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
 {
 	int argcW;
