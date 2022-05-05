@@ -47,7 +47,8 @@ void scanMemoryModules(DWORD procId)
 		{
 			if (me32.th32ProcessID == procId)
 			{
-
+				std::cout << "Module size: " << me32.modBaseSize << std::endl;
+				std::wcout << "Module name: " << me32.szModule << std::endl;
 			}
 		}
 	}

@@ -110,9 +110,7 @@ int main(int argc, char** argv)
 	std::cout << "Scan from " << sysInfo.lpMinimumApplicationAddress
 		<< " to " << sysInfo.lpMaximumApplicationAddress << std::endl;
 
-	MODULEENTRY32 me32;
-	me32.dwSize = sizeof(MODULEENTRY32);
 
-	scanFullMemory(procId);
+	scanMemoryModules(procId);
 	return 0;
 }
