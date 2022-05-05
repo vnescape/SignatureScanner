@@ -33,7 +33,7 @@ void scanFullMemory(DWORD procId)
 	CloseHandle(targetProcess);
 }
 
-void scanMemoryModules(DWORD prodId)
+void scanMemoryModules(DWORD procId)
 {
 	MODULEENTRY32 me32;
 	me32.dwSize = sizeof(MODULEENTRY32);
