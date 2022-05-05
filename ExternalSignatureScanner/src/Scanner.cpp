@@ -32,3 +32,24 @@ void scanFullMemory(DWORD procId)
 
 	CloseHandle(targetProcess);
 }
+
+void scanMemoryModules(DWORD prodId)
+{
+	MODULEENTRY32 me32;
+	me32.dwSize = sizeof(MODULEENTRY32);
+
+	HANDLE targetProcess = OpenProcess(PROCESS_VM_READ, true, procId);
+	HANDLE moduleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procId);
+
+	if (Module32First(moduleSnapshot, &me32))
+	{
+		while (Module32Next(moduleSnapshot, &me32))
+		{
+			if (me32.th32ProcessID == procId)
+			{
+
+			}
+		}
+	}
+	CloseHandle(targetProcess);
+}
