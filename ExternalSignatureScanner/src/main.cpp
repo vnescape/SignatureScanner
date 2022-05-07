@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 
 	//convert signature into byte array
 	const wchar_t* byteArray = signature.c_str();
-	int byteArrayLength = signature.length();
+	size_t byteArrayLength = signature.length();
 
 
 	// get system info
