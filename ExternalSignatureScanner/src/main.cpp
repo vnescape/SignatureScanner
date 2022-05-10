@@ -34,7 +34,7 @@ static void getProcessNameOrId(DWORD& outProcId, std::wstring& outProcName)
 /*
 Figures out if procId or procName is givin by the user and fills in the parameters by reference.
 */
-static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& outSignature)
+static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName, std::wstring& inSignature, wchar_t* outSignature)
 {
 	int argcW;
 	LPWSTR* argvW;
@@ -44,7 +44,23 @@ static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName
 	// get commannd line arguments as wide chars 
 	argvW = CommandLineToArgvW(GetCommandLineW(), &argcW);
 	procNameOrId = argvW[1];
-	outSignature = argvW[2];
+	inSignature = argvW[2];
+
+	// convert wstring to c string
+	const wchar_t* sig = inSignature.c_str();
+	unsigned long long sigSize = inSignature.size();
+	
+	// reserve memory for outSignature
+	outSignature = new wchar_t[sigSize];
+
+	// found hexadecimal signature and treat signature as raw bytes
+	if (inSignature.find(L"0x"))
+	{
+		for (int i = 0; i < sigSize; i++)
+		{
+			outSignature[i] = sig[i];
+		}
+	}
 
 	// if process name is used instead of providing process id
 	if (procNameOrId.find(L".exe") != std::string::npos)
@@ -85,9 +101,9 @@ int main(int argc, char** argv)
 
 	std::cout << "[ ] Scan for process id or process name..." << std::endl;
 
+	wchar_t* sig = NULL;
 
-
-	if (parseCommandLineArguments(procId, procName, signature))
+	if (parseCommandLineArguments(procId, procName, signature, sig))
 	{
 		std::cout << "[+] Found process" << std::endl;
 		std::cout << "    |- procId: " << procId << std::endl;
