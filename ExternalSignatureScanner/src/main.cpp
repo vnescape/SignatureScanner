@@ -51,7 +51,7 @@ static int parseCommandLineArguments(DWORD& outProcId, std::wstring& outProcName
 	unsigned long long sigSize = inSignature.size();
 	
 	// reserve memory for outSignature
-	outSignature = new wchar_t[sigSize];
+	outSignature = (wchar_t*)calloc(sigSize, sizeof(wchar_t));
 
 	// found hexadecimal signature and treat signature as raw bytes
 	if (inSignature.find(L"0x") != std::string::npos)
