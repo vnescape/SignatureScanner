@@ -41,6 +41,9 @@ void scanMemoryModules(DWORD procId)
 	HANDLE targetProcess = OpenProcess(PROCESS_VM_READ, true, procId);
 	HANDLE moduleSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, procId);
 
+	unsigned int numberOfModules = 0;
+
+	
 	if (Module32First(moduleSnapshot, &me32))
 	{
 		while (Module32Next(moduleSnapshot, &me32))
@@ -49,8 +52,10 @@ void scanMemoryModules(DWORD procId)
 			{
 				std::cout << "Module size: " << me32.modBaseSize << std::endl;
 				std::wcout << "Module name: " << me32.szModule << std::endl;
+				numberOfModules++;
 			}
 		}
 	}
+	std::cout << "Number of modues found: " << numberOfModules << std::endl;
 	CloseHandle(targetProcess);
 }

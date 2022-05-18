@@ -123,8 +123,6 @@ int main(int argc, char** argv)
 
 	// get system info
 	GetSystemInfo(&sysInfo);
-	std::cout << "Scan from " << sysInfo.lpMinimumApplicationAddress
-		<< " to " << sysInfo.lpMaximumApplicationAddress << std::endl;
 
 
 	scanMemoryModules(procId);
